@@ -10,7 +10,6 @@ library(magrittr)
 library(tidyverse)
 
 
-
 # PASOS PARA LA CREACIÓN DEL OBJETO:
 
 # En primer lugar cargamos el dataset elegido. Este archivo contine datos y metadatos juntos:
@@ -19,6 +18,12 @@ features <- readr::read_csv("DataValues_S013.csv", col_names = TRUE)
 # Vamos a realizar una exploración básica de los mismos para ver cómo están organizados:
 head(features, 10)
 str(features)
+
+# Vemos que el dataset incluye 39 observaciones (una por paciente o muestra) y 696 variables (metabolitos y otras medidas clínicas).
+# Los nombres de las columnas reflejan tanto la variable medida como el tiempo del muestreo (por ejemplo, "GLU_T0", "INS_T0", "bmi_T0"), lo que indica un seguimiento longitudinal de distintos parámetros.
+- Los valores están expresados en formato numérico de tipo continuo, lo que es de esperarse al tratarse de este tipo de variables.
+- El dataset incluye algunos valores nulos ("NA"), lo cual puede corresponderse con limitaciones técnicas o registros incompletos; pero que justifican la necesidad de hacer una limpieza previa al análisis exploratorio, y en este caso, una imputación de dichos valores.
+
 
 # Después de haber visto como se organizan, las primeras variables, la presencia de valores nulos, el tipo de datos... vamos a proceder a limpiar los datos. Para ello, eliminamos la primera columna y la fila 26, ya que los metadatos no pueden tener valores nulos (NA):
 features <- features[-1]
@@ -39,7 +44,9 @@ save(objeto, file = "SummarizedExperiment_objeto.Rda")
 
 
 
-# _________________________________________________________________________
+# _________________________________________________________________________________________________________________________________
+
+
 # ANÁLISIS EXPLORATORIO:
 
 # Para poder hacer el análisis exploratorio, iniciamos con la imputación de los NA empleando el método kNN:
